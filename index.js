@@ -7,6 +7,6 @@ app.set('port', (process.env.port || 5000));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send('hello');
+    res.send('Hello automatic deployment');
 })
 
