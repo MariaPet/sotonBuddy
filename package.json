@@ -1,0 +1,19 @@
+{
+  "name": "soton_buddy_backend",
+  "version": "1.0.0",
+  "description": "heroku backend for the soton buddy chatbot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://MariaPet:dmstr5t6y7@github.com/MariaPet/sotonBuddy.git"
+  },
+  "author": "Maria Petriti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MariaPet/sotonBuddy/issues"
+  },
+  "homepage": "https://github.com/MariaPet/sotonBuddy#readme"
+}
