@@ -29,5 +29,51 @@ app.get('/webhook', (req, res) => {
     else {
         res.sendStatus(403);
     }
+});
+
+//endpoint to handle response
+app.post('/webhook', (req, res) => {
+    let body = req.body;
+    let eventOrigin = body.object;
+    
+    if (eventOrigin === "page") {
+        
+        // Iterates over each entry - there may be multiple if batched
+        body.entry.forEach(function(entry) {
+            // Gets the message. entry.messaging is an array, but 
+            // will only ever contain one message, so we get index 0
+            let webhook_event = entry.messaging[0];
+            let sender = webhook_event.sender.id;
+            sendTextMessage(sender,"Hello buddy!");
+            res.status(200).send('EVENT_RECEIVED');
+        });
+    }
+    else {
+        // Returns a '404 Not Found' if event is not from a page subscription
+        res.sendStatus(404);
+    }
 })
+
+function sendMessage(sender, text) {
+    var messageData = {text: text}
+    var json = {
+        recipient: {id:sender},
+        message: messageData,
+    }
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {access_token: process.env.FB_PAGE_ACCESS_TOKEN},
+        method: 'POST',
+        json: json
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        }
+        else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    });
+}
+
+
 
