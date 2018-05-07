@@ -61,7 +61,7 @@ app.post('/webhook', (req, res) => {
                     console.log("Feed title" +"\n"+JSON.stringify(feed));
                     // sendMessage(sender,"Events"+feed.title);
                     let order = events.eventsMorePostback(webhookEvent)
-
+                    console.log(order);
                     let items = feed.items.slice(order*4, order + 4);
                     sendList(sender, items, order);
                     res.status(200).send('EVENT_RECEIVED');
