@@ -59,6 +59,7 @@ app.post('/webhook', (req, res) => {
                 parser.parseURL('http://id.southampton.ac.uk/dataset/events-diary/latest.rss').then(function(feed){
                     console.log("Feed title" +"\n"+JSON.stringify(feed));
                     // sendMessage(sender,"Events"+feed.title);
+                    res.status(200).send('EVENT_RECEIVED');
                 }, function(error) {
                     sendMessage(sender,error);
                 });
