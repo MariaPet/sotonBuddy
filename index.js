@@ -90,10 +90,6 @@ function sendList(sender, items) {
     let elements = []
     for (let i=0; i < 4; i++) {
         elements.push({
-            // content_type: "text",
-            // title: text[i].name+" "+text[i].distance,
-            // payload: "<POSTBACK_PAYLOAD>"
-            // payload: "Stop " + text[i].name
             title: items[i].title+" "+items[i].pubDate,
             buttons: [
                 {
@@ -112,7 +108,14 @@ function sendList(sender, items) {
             payload: {
                 template_type: "list",
                 top_element_style: "compact",
-                elements: elements
+                elements: elements,
+                buttons: [
+                    {
+                      "title": "View More",
+                      "type": "postback",
+                      "payload": "SOTON_EVENTS_MORE"            
+                    }
+                  ]
             }
         }
     }
