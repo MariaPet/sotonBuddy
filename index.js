@@ -115,7 +115,7 @@ function sendList(sender, items, order) {
                     {
                       "title": "View More",
                       "type": "postback",
-                      "payload": "SOTON_EVENTS_" + (order + 1)           
+                      "payload": "SOTON_EVENTS_" + (++order)           
                     }
                   ]
             }
