@@ -1,3 +1,4 @@
+const events = require("./events.js");
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -44,11 +45,13 @@ app.post('/webhook', (req, res) => {
         body.entry.forEach(function(entry) {
             // Gets the message. entry.messaging is an array, but 
             // will only ever contain one message, so we get index 0
-            let webhook_event = entry.messaging[0];
+            let webhookEvent = entry.messaging[0];
             let sender = webhook_event.sender.id;
-            sendMessage(sender,"Hello buddy!");
-            console.log('Message response')
-            res.status(200).send('EVENT_RECEIVED');
+            if (events.isStartPostback(webhookEvent)) {
+                sendMessage(sender,"Hello buddy!");
+                console.log('Message response')
+                res.status(200).send('EVENT_RECEIVED');
+            }
         });
     }
     else {
