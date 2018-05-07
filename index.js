@@ -99,7 +99,7 @@ function sendList(sender, items) {
                 {
                     title: "Details "+ items[i].title,
                     type: "postback",
-                    payload: "EVENT_DETAILS_"+ text[i].title
+                    payload: "EVENT_DETAILS_"+ items[i].title
                 }
             ]
         })
