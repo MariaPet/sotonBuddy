@@ -71,9 +71,9 @@ app.post('/webhook', (req, res) => {
             }
             else if (events.isBusPostback(webhookEvent)) {
             }
-            else if (events.isMessage(webhookEvent)) {
-                sendMessage(sender,"Message received!");
-            }
+            // else if (events.isMessage(webhookEvent)) {
+            //     sendMessage(sender,"Message received!");
+            // }
             res.status(200).send('EVENT_RECEIVED');
         });
     }
