@@ -55,13 +55,15 @@ app.post('/webhook', (req, res) => {
                 //TODO send back options
                 
             }
-            else if (events.isEventsPostback(webhookEvent)) {
+            else if (events.isEventsPostback(webhookEvent) !== false) {
                 sendMessage(sender,"Events");
                 parser.parseURL('http://data.southampton.ac.uk/dumps/events-diary/2018-05-07/events-diary.rss').then(function(feed){
                     console.log("Feed title" +"\n"+JSON.stringify(feed));
                     // sendMessage(sender,"Events"+feed.title);
-                    let items = feed.items;
-                    sendList(sender, items);
+                    let order = events.eventsMorePostback(webhookEvent)
+
+                    let items = feed.items.slice(order*4, order + 4);
+                    sendList(sender, items, order);
                     res.status(200).send('EVENT_RECEIVED');
                 }, function(error) {
                     console.log("error ", JSON.stringify(error))
@@ -86,11 +88,11 @@ app.post('/webhook', (req, res) => {
     }
 })
 
-function sendList(sender, items) {
+function sendList(sender, items, order) {
     let elements = []
-    for (let i=0; i < 4; i++) {
+    for (let i=0; i < items.length; i++) {
         elements.push({
-            title: items[i].title+" "+items[i].pubDate,
+            title: items[i].pubDate+" "+items[i].title,
             buttons: [
                 {
                     title: "Details "+ items[i].title,
@@ -113,7 +115,7 @@ function sendList(sender, items) {
                     {
                       "title": "View More",
                       "type": "postback",
-                      "payload": "SOTON_EVENTS_MORE"            
+                      "payload": "SOTON_EVENTS_" + (order + 1)           
                     }
                   ]
             }

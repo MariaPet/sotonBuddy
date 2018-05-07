@@ -6,10 +6,17 @@ module.exports = {
         return false;
     },
     isEventsPostback:  function(webhookEvent) {
-        if (webhookEvent.postback && webhookEvent.postback.payload === "SOTON_EVENTS") {
+        if (webhookEvent.postback && webhookEvent.postback.payload.indexOf("SOTON_EVENTS") === 0) {
             return true;
         }
         return false;
+    },
+    eventsMorePostback: function(webhookEvent) {
+        let payload = webhookEvent.postback.payload.split('_');
+        if (payload.lenght === 3 && !isNaN(payload[2])) {
+            return parseInt(payload.split('_')[2]);
+        }
+        return 0;
     },
     isMenuPostback:  function(webhookEvent) {
         if (webhookEvent.postback && webhookEvent.postback.payload === "SOTON_MENU") {
