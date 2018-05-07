@@ -56,9 +56,12 @@ app.post('/webhook', (req, res) => {
             }
             else if (events.isEventsPostback(webhookEvent)) {
                 sendMessage(sender,"Events");
-                let feed = await parser.parseURL('https://www.reddit.com/.rss');
-                console.log(feed.title);
-                sendMessage(sender,"Events"+feed.title);
+                parser.parseURL('https://www.reddit.com/.rss').then(function(feed){
+                    console.log(feed.title);
+                    sendMessage(sender,"Events"+feed.title);
+                }, function(error) {
+                    sendMessage(sender,error);
+                });
             }
             else if (events.isBuildingsPostback(webhookEvent)) {
                 
