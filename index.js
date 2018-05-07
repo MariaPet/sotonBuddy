@@ -62,7 +62,8 @@ app.post('/webhook', (req, res) => {
                     // sendMessage(sender,"Events"+feed.title);
                     res.status(200).send('EVENT_RECEIVED');
                 }, function(error) {
-                    sendMessage(sender,error);
+                    console.log("error ", JSON.stringify(error))
+                    sendMessage(sender,"error");
                     res.status(200).send('EVENT_RECEIVED');
                 });
             }
