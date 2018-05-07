@@ -48,10 +48,25 @@ app.post('/webhook', (req, res) => {
             let webhookEvent = entry.messaging[0];
             let sender = webhookEvent.sender.id;
             if (events.isStartPostback(webhookEvent)) {
-                sendMessage(sender,"Hello buddy!");
-                console.log('Message response')
-                res.status(200).send('EVENT_RECEIVED');
+                sendMessage(sender,"Hello buddy! Choose an option from the menu.");
+                //TODO send back options
+                
             }
+            else if (events.isEventsPostback(webhookEvent)) {
+                sendMessage(sender,"Events");
+            }
+            else if (events.isBuildingsPostback(webhookEvent)) {
+                
+            }
+            else if (events.isMenuPostback(webhookEvent)) {
+                
+            }
+            else if (events.isBusPostback(webhookEvent)) {
+            }
+            else if (events.isMessage(webhookEvent)) {
+                sendMessage(sender,"Message received!");
+            }
+            res.status(200).send('EVENT_RECEIVED');
         });
     }
     else {
@@ -78,6 +93,9 @@ function sendMessage(sender, text) {
         }
         else if (response.body.error) {
             console.log('Error: ', response.body.error)
+        }
+        else {
+            console.log('Message response')
         }
     });
 }

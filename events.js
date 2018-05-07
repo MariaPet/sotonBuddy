@@ -5,6 +5,30 @@ module.exports = {
         }
         return false;
     },
+    isEventsPostback:  function(webhookEvent) {
+        if (webhookEvent.postback && webhookEvent.postback.payload === "SOTON_EVENTS") {
+            return true;
+        }
+        return false;
+    },
+    isMenuPostback:  function(webhookEvent) {
+        if (webhookEvent.postback && webhookEvent.postback.payload === "SOTON_MENU") {
+            return true;
+        }
+        return false;
+    },
+    isBuildingsPostback:  function(webhookEvent) {
+        if (webhookEvent.postback && webhookEvent.postback.payload === "SOTON_BUILDINGS") {
+            return true;
+        }
+        return false;
+    },
+    isBusPostback:  function(webhookEvent) {
+        if (webhookEvent.postback && webhookEvent.postback.payload === "SOTON_BUS") {
+            return true;
+        }
+        return false;
+    },
     isMessage: function(webhookEvent) {
 
     }
