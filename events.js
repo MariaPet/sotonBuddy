@@ -15,8 +15,10 @@ module.exports = {
         let payload = webhookEvent.postback.payload.split('_');
         console.log(payload)
         if (payload.lenght === 3) {
+            console.log(payload.lenght)
             return parseInt(payload[2]);
         }
+        console.log(payload.lenght)
         return 0;
     },
     isMenuPostback:  function(webhookEvent) {
