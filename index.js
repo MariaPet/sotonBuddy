@@ -60,6 +60,8 @@ app.post('/webhook', (req, res) => {
                 parser.parseURL('http://data.southampton.ac.uk/dumps/events-diary/2018-05-07/events-diary.rss').then(function(feed){
                     console.log("Feed title" +"\n"+JSON.stringify(feed));
                     // sendMessage(sender,"Events"+feed.title);
+                    let items = feed.items;
+                    sendList(sender, items);
                     res.status(200).send('EVENT_RECEIVED');
                 }, function(error) {
                     console.log("error ", JSON.stringify(error))
@@ -75,10 +77,6 @@ app.post('/webhook', (req, res) => {
             }
             else if (events.isBusPostback(webhookEvent)) {
             }
-            // else if (events.isMessage(webhookEvent)) {
-            //     sendMessage(sender,"Message received!");
-            // }
-            // res.status(200).send('EVENT_RECEIVED');
         });
     }
     else {
@@ -88,12 +86,52 @@ app.post('/webhook', (req, res) => {
     }
 })
 
+function sendList(sender, items) {
+    let elements = []
+    for (let i=0; i < items.length; i++) {
+        elements.push({
+            // content_type: "text",
+            // title: text[i].name+" "+text[i].distance,
+            // payload: "<POSTBACK_PAYLOAD>"
+            // payload: "Stop " + text[i].name
+            title: items[i].title+" "+items[i].pubDate,
+            buttons: [
+                {
+                    title: "Details "+ items[i].title,
+                    type: "postback",
+                    payload: "EVENT_DETAILS_"+ text[i].title
+                }
+            ]
+        })
+    }
+  
+    messageData = {
+        // text: "test",
+        attachment : {
+            type: "template",
+            payload: {
+                template_type: "list",
+                top_element_style: "compact",
+                elements: elements
+            }
+        }
+    }
+    json= {
+        recipient: {id:sender},
+        message: messageData,
+    }
+    postRequest(json);
+}
 function sendMessage(sender, text) {
     var messageData = {text: text}
     var json = {
         recipient: {id:sender},
         message: messageData,
     }
+    postRequest(json);
+}
+
+function postRequest(json) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: process.env.FB_PAGE_ACCESS_TOKEN},
