@@ -56,7 +56,7 @@ app.post('/webhook', (req, res) => {
             }
             else if (events.isEventsPostback(webhookEvent)) {
                 sendMessage(sender,"Events");
-                parser.parseURL('https://www.reddit.com/.rss').then(function(feed){
+                parser.parseURL('http://id.southampton.ac.uk/dataset/events-diary/latest.rss').then(function(feed){
                     console.log(feed.title);
                     sendMessage(sender,"Events"+feed.title);
                 }, function(error) {
