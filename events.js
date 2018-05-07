@@ -13,6 +13,7 @@ module.exports = {
     },
     eventsMorePostback: function(webhookEvent) {
         let payload = webhookEvent.postback.payload.split('_');
+        console.log(payload)
         if (payload.lenght === 3 && !isNaN(payload[2])) {
             return parseInt(payload[2]);
         }
