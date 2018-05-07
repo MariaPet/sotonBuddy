@@ -52,8 +52,6 @@ app.post('/webhook', (req, res) => {
             if (events.isStartPostback(webhookEvent)) {
                 sendMessage(sender,"Hello buddy! Choose an option from the menu.");
                 res.status(200).send('EVENT_RECEIVED');
-                //TODO send back options
-                
             }
             else if (events.isEventsPostback(webhookEvent) !== false) {
                 sendMessage(sender,"Events");
@@ -115,7 +113,7 @@ function sendList(sender, items, order) {
                     {
                       "title": "View More",
                       "type": "postback",
-                      "payload": "SOTON_EVENTS_" + (++order)           
+                      "payload": "SOTON_EVENTS_" + (order + 4)           
                     }
                   ]
             }
