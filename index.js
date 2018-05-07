@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const request = require('request');
+const Parser = require('rss-parser');
+const parser = new Parser();
 
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
@@ -54,6 +56,9 @@ app.post('/webhook', (req, res) => {
             }
             else if (events.isEventsPostback(webhookEvent)) {
                 sendMessage(sender,"Events");
+                let feed = await parser.parseURL('https://www.reddit.com/.rss');
+                console.log(feed.title);
+                sendMessage(sender,"Events"+feed.title);
             }
             else if (events.isBuildingsPostback(webhookEvent)) {
                 
