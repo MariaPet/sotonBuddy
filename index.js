@@ -88,7 +88,7 @@ app.post('/webhook', (req, res) => {
 
 function sendList(sender, items) {
     let elements = []
-    for (let i=0; i < items.length; i++) {
+    for (let i=0; i < 11; i++) {
         elements.push({
             // content_type: "text",
             // title: text[i].name+" "+text[i].distance,
