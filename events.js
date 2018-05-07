@@ -16,7 +16,7 @@ module.exports = {
         console.log(payload)
         if (payload.length === 3) {
             console.log(payload.length)
-            return parseInt(payload[2]);
+            return parseInt(payload[2]) * 4;
         }
         console.log(payload.length)
         return 0;
