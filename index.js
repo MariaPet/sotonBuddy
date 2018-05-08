@@ -57,12 +57,20 @@ app.post('/webhook', (req, res) => {
                 sendMessage(sender,"Events");
                 parser.parseURL('http://data.southampton.ac.uk/dumps/events-diary/2018-05-07/events-diary.rss').then(function(feed){
                     console.log("Feed title" +"\n"+JSON.stringify(feed));
-                    // sendMessage(sender,"Events"+feed.title);
                     let order = events.eventsMorePostback(webhookEvent)
-                    console.log(order);
-                    let items = feed.items.slice(order, order + 4);
-                    sendList(sender, items, order);
-                    res.status(200).send('EVENT_RECEIVED');
+                    let items = feed.items;
+                    // if (items.length - order )
+                    if (items.length - order < 4 && items.length - order > 0) {
+                        items = items.slice(order, items.length);
+                        sendList(sender, items, -1);
+                        res.status(200).send('EVENT_RECEIVED');
+                    }
+                    else if (items.length - order > 4) {
+                        items = items.slice(order, order + 4);
+                        sendList(sender, items, order);
+                        res.status(200).send('EVENT_RECEIVED');
+                    }
+                    
                 }, function(error) {
                     console.log("error ", JSON.stringify(error))
                     sendMessage(sender,"error");
@@ -102,14 +110,13 @@ function sendList(sender, items, order) {
     }
   
     messageData = {
-        // text: "test",
         attachment : {
             type: "template",
             payload: {
                 template_type: "list",
                 top_element_style: "compact",
                 elements: elements,
-                buttons: [
+                buttons: order === -1? []: [
                     {
                       "title": "View More",
                       "type": "postback",
