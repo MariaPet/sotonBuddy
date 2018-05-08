@@ -100,7 +100,7 @@ app.post('/webhook', (req, res) => {
                             console.log("Oops, something happened and couldn't fetch data");
                         } else {
                             // do something with the data in the store (see below)
-                            console.log(store.statements) // shows the parsed statements
+                            console.log(body) // shows the parsed statements
                             sendMessage(sender,"test rdf");
                         }
                     })
