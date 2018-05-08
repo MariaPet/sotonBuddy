@@ -55,8 +55,8 @@ app.post('/webhook', (req, res) => {
             }
             else if (events.isEventsPostback(webhookEvent) !== false) {
                 var now = new Date();
-                now = now.toISOString().slice(0, now.indexOf('T'));
-                console.log(now)
+                //Convert date to ISO format and strip time zone info
+                now = now.toISOString().slice(0, now.toISOString().indexOf('T'));
                 parser.parseURL('http://data.southampton.ac.uk/dumps/events-diary/'+now+'/events-diary.rss').then(function(feed){
                     console.log("Feed title" +"\n"+JSON.stringify(feed));
                     let order = events.eventsMorePostback(webhookEvent)
