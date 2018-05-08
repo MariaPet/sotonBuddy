@@ -54,7 +54,10 @@ app.post('/webhook', (req, res) => {
                 res.status(200).send('EVENT_RECEIVED');
             }
             else if (events.isEventsPostback(webhookEvent) !== false) {
-                parser.parseURL('http://data.southampton.ac.uk/dumps/events-diary/2018-05-07/events-diary.rss').then(function(feed){
+                var now = new Date();
+                now = now.slice(0, now.indexOf('T'));
+                console.log(now)
+                parser.parseURL('http://data.southampton.ac.uk/dumps/events-diary/'+now+'/events-diary.rss').then(function(feed){
                     console.log("Feed title" +"\n"+JSON.stringify(feed));
                     let order = events.eventsMorePostback(webhookEvent)
                     let items = feed.items;
@@ -71,6 +74,7 @@ app.post('/webhook', (req, res) => {
                     }
                     else {
                         sendMessage(sender,"That's all the events for the next days.");
+                        res.status(200).send('EVENT_RECEIVED');
                     }
                     
                 }, function(error) {
