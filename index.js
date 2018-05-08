@@ -54,7 +54,6 @@ app.post('/webhook', (req, res) => {
                 res.status(200).send('EVENT_RECEIVED');
             }
             else if (events.isEventsPostback(webhookEvent) !== false) {
-                sendMessage(sender,"Events");
                 parser.parseURL('http://data.southampton.ac.uk/dumps/events-diary/2018-05-07/events-diary.rss').then(function(feed){
                     console.log("Feed title" +"\n"+JSON.stringify(feed));
                     let order = events.eventsMorePostback(webhookEvent)
@@ -69,6 +68,9 @@ app.post('/webhook', (req, res) => {
                         items = items.slice(order, order + 4);
                         sendList(sender, items, order);
                         res.status(200).send('EVENT_RECEIVED');
+                    }
+                    else {
+                        sendMessage(sender,"That's all the events for the next days.");
                     }
                     
                 }, function(error) {
