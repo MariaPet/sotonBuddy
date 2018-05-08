@@ -5,6 +5,7 @@ const app = express();
 const request = require('request');
 const Parser = require('rss-parser');
 const parser = new Parser();
+$rdf = require('rdflib');
 
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
@@ -87,7 +88,18 @@ app.post('/webhook', (req, res) => {
                 
             }
             else if (events.isMenuPostback(webhookEvent)) {
-                
+                try {
+                    var uri = 'http://id.southampton.ac.uk/dataset/catering-daily-menu/latest.ttl'
+                    var body = '<a> <b> <c> .'
+                    var mimeType = 'text/turtle'
+                    var store = $rdf.graph()
+                    $rdf.parse(data, store, uri, contentType)
+                    console.log(store.statements) // shows the parsed statements
+                    sendMessage(sender,"test rdf");
+                    res.status(200).send('EVENT_RECEIVED');
+                } catch (err) {
+                    console.log(err)
+                }
             }
             else if (events.isBusPostback(webhookEvent)) {
             }
