@@ -89,24 +89,26 @@ app.post('/webhook', (req, res) => {
             }
             else if (events.isMenuPostback(webhookEvent)) {
                 try {
-                    var uri = 'http://id.southampton.ac.uk/dataset/catering-daily-menu/latest.ttl'
-                    // var body = '<a> <b> <c> .'
-                    // var mimeType = 'text/turtle'
+                    var menus_url = 'http://id.southampton.ac.uk/dataset/catering-daily-menu/latest.ttl'
                     var store = $rdf.graph()
                     var timeout = 5000 // 5000 ms timeout
                     var fetcher = new $rdf.Fetcher(store, timeout)
-                    fetcher.nowOrWhenFetched(uri, function(ok, body, xhr) {
+                    fetcher.nowOrWhenFetched(menus_url, function(ok, body, xhr) {
                         if (!ok) {
                             console.log("Oops, something happened and couldn't fetch data");
                         } else {
-                            // do something with the data in the store (see below)
-                            console.log(body) // shows the parsed statements
+                            // do something with the data in the store
                             console.log(xhr)
+                            var mimeType = 'text/turtle'
+                            try {
+                                $rdf.parse(xhr, store, menus_url, mimeType)
+                                console.log(store.statements) // shows the parsed statements
+                            } catch (err) {
+                                console.log(err)
+                            }
                             sendMessage(sender,"test rdf");
                         }
                     })
-                    // $rdf.parse(body, store, uri, mimeType)
-                    
                     res.status(200).send('EVENT_RECEIVED');
                 } catch (err) {
                     console.log(err)
