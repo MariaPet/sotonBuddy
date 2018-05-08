@@ -100,8 +100,9 @@ app.post('/webhook', (req, res) => {
                             // do something with the data in the store
                             console.log(xhr)
                             var mimeType = 'text/turtle'
+                            var menu_uri = 'http://id.southampton.ac.uk/dataset/catering-daily-menu'
                             try {
-                                $rdf.parse(xhr, store, menus_url, mimeType)
+                                $rdf.parse(xhr, store, menu_uri, mimeType)
                                 console.log(store.statements) // shows the parsed statements
                             } catch (err) {
                                 console.log(err)
