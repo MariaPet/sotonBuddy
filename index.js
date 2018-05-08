@@ -93,7 +93,7 @@ app.post('/webhook', (req, res) => {
                     var body = '<a> <b> <c> .'
                     var mimeType = 'text/turtle'
                     var store = $rdf.graph()
-                    $rdf.parse(body, store, uri, contentType)
+                    $rdf.parse(body, store, uri, mimeType)
                     console.log(store.statements) // shows the parsed statements
                     sendMessage(sender,"test rdf");
                     res.status(200).send('EVENT_RECEIVED');
