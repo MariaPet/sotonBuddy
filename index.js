@@ -55,7 +55,7 @@ app.post('/webhook', (req, res) => {
             }
             else if (events.isEventsPostback(webhookEvent) !== false) {
                 var now = new Date();
-                now = now.slice(0, now.indexOf('T'));
+                now = now.toISOString().slice(0, now.indexOf('T'));
                 console.log(now)
                 parser.parseURL('http://data.southampton.ac.uk/dumps/events-diary/'+now+'/events-diary.rss').then(function(feed){
                     console.log("Feed title" +"\n"+JSON.stringify(feed));
