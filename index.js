@@ -101,6 +101,7 @@ app.post('/webhook', (req, res) => {
                         } else {
                             // do something with the data in the store (see below)
                             console.log(body) // shows the parsed statements
+                            console.log(xhr)
                             sendMessage(sender,"test rdf");
                         }
                     })
