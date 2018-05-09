@@ -103,9 +103,9 @@ app.post('/webhook', (req, res) => {
                             var menuUri = 'http://id.southampton.ac.uk/dataset/catering-daily-menu'
                             try {
                                 // $rdf.parse(xhr, store, menuUri, mimeType)
-                                var me = $rdf.sym('http://data.southampton.ac.uk/dumps/catering-daily-menu/2018-05-09/catering-daily-menu.nt');
-                                console.log(store.statements) // shows the parsed statements
-                                console.log(me)
+                                // var me = $rdf.sym('http://data.southampton.ac.uk/dumps/catering-daily-menu/2018-05-09/catering-daily-menu.nt');
+                                console.log(store)//.statements) // shows the parsed statements
+                                // console.log(me)
                             } catch (err) {
                                 console.log(err)
                             }
