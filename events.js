@@ -24,7 +24,7 @@ module.exports = {
         }
         return false;
     },
-    whichMenuPostback:  function(webhook) {
+    whichMenuPostback:  function(webhookEvent) {
         let payload = webhookEvent.postback.payload.split('_');
         if (payload.length === 3) {
             return ('http://id.southampton.ac.uk/point-of-service/' + payload[2]);
