@@ -108,12 +108,11 @@ app.post('/webhook', (req, res) => {
                                 console.log(store.statements) // shows the parsed statements
                                 // console.log(me)
 
-                                var RDF = $rdf.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-                                var FOAF = $rdf.Namespace("http://xmlns.com/foaf/0.1/");
-                                var SCHEMA = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#");
+                                RDF = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+                                RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
                                 const allTriples = store.statementsMatching( 
                                     $rdf.sym("http://id.southampton.ac.uk/food-feature/B1TODAY"),
-                                    RDF.type,
+                                    RDF('type'),
                                     undefined);
                                 allTriples.slice(4000, 4500).forEach(function(triple) {
                                     console.log(triple.object.term)
