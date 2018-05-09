@@ -116,6 +116,7 @@ app.post('/webhook', (req, res) => {
                                     NS0('availableAtOrFrom'),
                                     $rdf.sym("http://id.southampton.ac.uk/point-of-service/42-piazza"));
                                 allTriples.forEach(function(triple) {
+                                    console.log(triple.subject.value)
                                     var label = store.any($rdf.sym(triple.subject.value), NS0('label'), undefined)
                                     console.log(JSON.stringify(label))
                                     // if(triple.object.termType === "NamedNode") {
