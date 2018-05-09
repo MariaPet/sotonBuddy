@@ -115,7 +115,8 @@ app.post('/webhook', (req, res) => {
                                     $rdf.sym("http://data.southampton.ac.uk/dumps/catering-daily-menu/2018-05-09/catering-daily-menu.nt#provenance"),
                                     $rdf.sym("http://www.w3.org/ns/prov#used"),
                                     $rdf.sym("http://data.southampton.ac.uk/dumps/catering-daily-menu/2018-05-09/todays-menu-42-piazza.csv"));
-                                allTriples.forEach(function(triple) {
+                                allTriples.slice(4000, 4500).forEach(function(triple) {
+                                    console.log(triple.object.term)
                                     if(triple.object.termType === "NamedNode") {
                                         console.log('<' + triple.object.uri) + '>';
                                         }
