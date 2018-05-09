@@ -96,7 +96,7 @@ app.post('/webhook', (req, res) => {
                     var fetcher = new $rdf.Fetcher(store, timeout)
                     var requestedMenu = events.whichMenuPostback(webhookEvent)
                     if (requestedMenu) {
-                        fetcher.nowOrWhenFetched(cateringUrl, function(ok, body, xhr) {
+                        // fetcher.nowOrWhenFetched(cateringUrl, function(ok, body, xhr) {
                             if (!ok) {
                                 console.log("Oops, something happened and couldn't fetch data");
                             } else {
@@ -104,14 +104,14 @@ app.post('/webhook', (req, res) => {
                                     var RDF = $rdf.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
                                     var RDFS = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#")
                                     var NS0 = $rdf.Namespace("http://purl.org/goodrelations/v1#");
-                                    const poiTriples = store.statementsMatching( 
-                                        undefined,
-                                        RDF('type'),
-                                        $rdf.sym("http://purl.org/goodrelations/v1#LocationOfSalesOrServiceProvisioning")
-                                    );
-                                    poiTriples.forEach(function(poiTriple) {
-                                        var pointOfSaleUri = poiTriple.subject.value
-                                        if (requestedMenu === pointOfSaleUri) {
+                                    // const poiTriples = store.statementsMatching( 
+                                    //     undefined,
+                                    //     RDF('type'),
+                                    //     $rdf.sym("http://purl.org/goodrelations/v1#LocationOfSalesOrServiceProvisioning")
+                                    // );
+                                    // poiTriples.forEach(function(poiTriple) {
+                                    //     var pointOfSaleUri = poiTriple.subject.value
+                                        // if (requestedMenu) {
                                             fetcher.nowOrWhenFetched(menusUrl, function(ok, body, xhr) {
                                                 if (!ok) {
                                                     console.log("Oops, something happened and couldn't fetch data");
@@ -120,8 +120,7 @@ app.post('/webhook', (req, res) => {
                                                         const menuTriples = store.statementsMatching( 
                                                             undefined,
                                                             NS0('availableAtOrFrom'),
-                                                            $rdf.sym(pointOfSaleUri),
-                                                            menusUrl
+                                                            $rdf.sym(requestedMenu)
                                                         );
                                                         menuTriples.forEach(function(menuTriple) {
                                                             var label = store.any($rdf.sym(menuTriple.subject.value), RDFS('label'), undefined)
@@ -135,14 +134,14 @@ app.post('/webhook', (req, res) => {
                                                     }
                                                 }
                                             })
-                                        }
-                                    });
+                                        // }
+                                    // });
                                 }
                                 catch (err) {
                                     console.log(err)
                                 }
                             }
-                        });
+                        // });
                     }
                     
                     
