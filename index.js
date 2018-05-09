@@ -89,45 +89,62 @@ app.post('/webhook', (req, res) => {
             }
             else if (events.isMenuPostback(webhookEvent)) {
                 try {
-                    var menus_url = 'http://id.southampton.ac.uk/dataset/catering-daily-menu/latest.ttl'
+                    var cateringUrl = "http://id.southampton.ac.uk/dataset/catering/latest.ttl"
+                    var menusUrl = 'http://id.southampton.ac.uk/dataset/catering-daily-menu/latest.ttl'
                     var store = $rdf.graph()
                     var timeout = 5000 // 5000 ms timeout
                     var fetcher = new $rdf.Fetcher(store, timeout)
-                    fetcher.nowOrWhenFetched(menus_url, function(ok, body, xhr) {
-                        if (!ok) {
-                            console.log("Oops, something happened and couldn't fetch data");
-                        } else {
-                            // do something with the data in the store
-                            // console.log(xhr)
-                            // var mimeType = 'application/rdf+xml'
-                            // var menuUri = 'http://id.southampton.ac.uk/dataset/catering-daily-menu'
-                            try {
-                                // store.serialize(menuUri, format='application/json-ld')
-                                // $rdf.parse(xhr, store, menuUri, mimeType)
-                                // var me = $rdf.sym('http://data.southampton.ac.uk/dumps/catering-daily-menu/2018-05-09/catering-daily-menu.nt');
-                                // console.log(store.statements) // shows the parsed statements
-                                // console.log(me)
-
-                                var RDF = $rdf.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-                                var RDFS = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#")
-                                var NS0 = $rdf.Namespace("http://purl.org/goodrelations/v1#");
-                                const allTriples = store.statementsMatching( 
-                                    undefined,
-                                    NS0('availableAtOrFrom'),
-                                    $rdf.sym("http://id.southampton.ac.uk/point-of-service/42-piazza"));
-                                allTriples.forEach(function(triple) {
-                                    var label = store.any($rdf.sym(triple.subject.value), RDFS('label'), undefined)
-                                    console.log(JSON.stringify(label))
-                                    if (label.termType === "Literal") {
-                                        sendMessage(sender,label.value);
-                                    }
-                                });
-                            } catch (err) {
-                                console.log(err)
+                    var requestedMenu = events.whichMenuPostback(webhookEvent)
+                    if (requestedMenu) {
+                        fetcher.nowOrWhenFetched(cateringUrl, function(ok, body, xhr) {
+                            if (!ok) {
+                                console.log("Oops, something happened and couldn't fetch data");
+                            } else {
+                                try {
+                                    var RDF = $rdf.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+                                    var RDFS = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#")
+                                    var NS0 = $rdf.Namespace("http://purl.org/goodrelations/v1#");
+                                    const poiTriples = store.statementsMatching( 
+                                        undefined,
+                                        RDF('type'),
+                                        $rdf.sym("http://purl.org/goodrelations/v1#LocationOfSalesOrServiceProvisioning")
+                                    );
+                                    poiTriples.forEach(function(poiTriple) {
+                                        var pointOfSaleUri = poiTriple.subject.value
+                                        if (requestedMenu === pointOfSaleUri) {
+                                            fetcher.nowOrWhenFetched(menusUrl, function(ok, body, xhr) {
+                                                if (!ok) {
+                                                    console.log("Oops, something happened and couldn't fetch data");
+                                                } else {
+                                                    try {
+                                                        const menuTriples = store.statementsMatching( 
+                                                            undefined,
+                                                            NS0('availableAtOrFrom'),
+                                                            $rdf.sym(pointOfSaleUri)
+                                                        );
+                                                        menuTriples.forEach(function(menuTriple) {
+                                                            var label = store.any($rdf.sym(menuTriple.subject.value), RDFS('label'), undefined)
+                                                            console.log(JSON.stringify(label))
+                                                            if (label.termType === "Literal") {
+                                                                sendMessage(sender,label.value);
+                                                            }
+                                                        });
+                                                    } catch (err) {
+                                                        console.log(err)
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    });
+                                }
+                                catch (err) {
+                                    console.log(err)
+                                }
                             }
-                            // sendMessage(sender,"test rdf");
-                        }
-                    })
+                        });
+                    }
+                    
+                    
                     res.status(200).send('EVENT_RECEIVED');
                 } catch (err) {
                     console.log(err)

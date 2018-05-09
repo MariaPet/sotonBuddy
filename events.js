@@ -19,8 +19,15 @@ module.exports = {
         return 0;
     },
     isMenuPostback:  function(webhookEvent) {
-        if (webhookEvent.postback && webhookEvent.postback.payload === "SOTON_MENU") {
+        if (webhookEvent.postback && webhookEvent.postback.payload.indexOf("SOTON_MENU") === 0) {
             return true;
+        }
+        return false;
+    },
+    whichMenuPostback:  function(webhook) {
+        let payload = webhookEvent.postback.payload.split('_');
+        if (payload.length === 3) {
+            return ('http://id.southampton.ac.uk/point-of-service/' + payload[2]);
         }
         return false;
     },
