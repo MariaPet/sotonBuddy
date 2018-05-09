@@ -120,7 +120,8 @@ app.post('/webhook', (req, res) => {
                                                         const menuTriples = store.statementsMatching( 
                                                             undefined,
                                                             NS0('availableAtOrFrom'),
-                                                            $rdf.sym(pointOfSaleUri)
+                                                            $rdf.sym(pointOfSaleUri),
+                                                            menusUrl
                                                         );
                                                         menuTriples.forEach(function(menuTriple) {
                                                             var label = store.any($rdf.sym(menuTriple.subject.value), RDFS('label'), undefined)
