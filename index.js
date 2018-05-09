@@ -110,12 +110,12 @@ app.post('/webhook', (req, res) => {
 
                                 var RDF = $rdf.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
                                 var RDFS = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#")
+                                var NS0 = $rdf.Namespace("http://purl.org/goodrelations/v1#");
                                 const allTriples = store.statementsMatching( 
-                                    $rdf.sym("http://id.southampton.ac.uk/food-feature/B1TODAY"),
-                                    RDF('type'),
-                                    undefined);
+                                    undefined,
+                                    NS0('availableAtOrFrom'),
+                                    $rdf.sym("http://id.southampton.ac.uk/point-of-service/42-piazza"));
                                 allTriples.forEach(function(triple) {
-                                    console.log(triple.object.term)
                                     if(triple.object.termType === "NamedNode") {
                                         console.log('<' + triple.object.uri) + '>';
                                         }
