@@ -112,9 +112,9 @@ app.post('/webhook', (req, res) => {
                                 var FOAF = $rdf.Namespace("http://xmlns.com/foaf/0.1/");
                                 var SCHEMA = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#");
                                 const allTriples = store.statementsMatching( 
-                                    $rdf.sym("http://data.southampton.ac.uk/dumps/catering-daily-menu/2018-05-09/catering-daily-menu.nt#provenance"),
-                                    $rdf.sym("http://www.w3.org/ns/prov#used"),
-                                    $rdf.sym("http://data.southampton.ac.uk/dumps/catering-daily-menu/2018-05-09/todays-menu-42-piazza.csv"));
+                                    $rdf.sym("http://id.southampton.ac.uk/food-feature/B1TODAY"),
+                                    RDF.type,
+                                    undefined);
                                 allTriples.slice(4000, 4500).forEach(function(triple) {
                                     console.log(triple.object.term)
                                     if(triple.object.termType === "NamedNode") {
