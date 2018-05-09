@@ -105,8 +105,17 @@ app.post('/webhook', (req, res) => {
                                 // store.serialize(menuUri, format='application/json-ld')
                                 // $rdf.parse(xhr, store, menuUri, mimeType)
                                 // var me = $rdf.sym('http://data.southampton.ac.uk/dumps/catering-daily-menu/2018-05-09/catering-daily-menu.nt');
-                                console.log(store)//.statements) // shows the parsed statements
+                                // console.log(store)//.statements) // shows the parsed statements
                                 // console.log(me)
+                                const allTriples = store.statementsMatching(undefined, undefined, undefined);
+                                allTriples.forEach(function(triple) {
+                                    if(triple.object.termType === "NamedNode") {
+                                        console.log('<' + triple.object.uri) + '>';
+                                        }
+                                    else  {
+                                        console.log('\'' + triple.object.value + '\'');
+                                    }
+                                });
                             } catch (err) {
                                 console.log(err)
                             }
