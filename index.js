@@ -102,7 +102,7 @@ app.post('/webhook', (req, res) => {
                             var mimeType = 'application/rdf+xml'
                             var menuUri = 'http://id.southampton.ac.uk/dataset/catering-daily-menu'
                             try {
-                                $rdf.parse(xhr, store, menuUri, mimeType)
+                                // $rdf.parse(xhr, store, menuUri, mimeType)
                                 console.log(store.statements) // shows the parsed statements
                             } catch (err) {
                                 console.log(err)
