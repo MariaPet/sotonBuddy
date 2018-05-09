@@ -117,10 +117,10 @@ app.post('/webhook', (req, res) => {
                                     $rdf.sym("http://id.southampton.ac.uk/point-of-service/42-piazza"));
                                 allTriples.forEach(function(triple) {
                                     if(triple.object.termType === "NamedNode") {
-                                        console.log('<' + triple.object.uri) + '>';
+                                        console.log(JSON.stringify(triple))
                                         }
                                     else  {
-                                        console.log('\'' + triple.object.value + '\'');
+                                        console.log('hollaaaa \'' + triple.object.value + '\'');
                                     }
                                 });
                             } catch (err) {
