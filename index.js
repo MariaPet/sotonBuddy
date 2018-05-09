@@ -105,7 +105,7 @@ app.post('/webhook', (req, res) => {
                                 // store.serialize(menuUri, format='application/json-ld')
                                 // $rdf.parse(xhr, store, menuUri, mimeType)
                                 // var me = $rdf.sym('http://data.southampton.ac.uk/dumps/catering-daily-menu/2018-05-09/catering-daily-menu.nt');
-                                console.log(store.statements) // shows the parsed statements
+                                // console.log(store.statements) // shows the parsed statements
                                 // console.log(me)
 
                                 RDF = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
@@ -114,7 +114,7 @@ app.post('/webhook', (req, res) => {
                                     $rdf.sym("http://id.southampton.ac.uk/food-feature/B1TODAY"),
                                     RDF('type'),
                                     undefined);
-                                allTriples.slice(4000, 4500).forEach(function(triple) {
+                                allTriples.forEach(function(triple) {
                                     console.log(triple.object.term)
                                     if(triple.object.termType === "NamedNode") {
                                         console.log('<' + triple.object.uri) + '>';
