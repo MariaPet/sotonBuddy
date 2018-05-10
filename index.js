@@ -58,7 +58,7 @@ app.post('/webhook', (req, res) => {
                 //Convert date to ISO format and strip time zone info
                 now = now.toISOString().slice(0, now.toISOString().indexOf('T'));
                 parser.parseURL('http://data.southampton.ac.uk/dumps/events-diary/'+now+'/events-diary.rss').then(function(feed){
-                    console.log("Feed title" +"\n"+JSON.stringify(feed));
+                    // console.log("Feed title" +"\n"+JSON.stringify(feed));
                     let order = events.eventsMorePostback(webhookEvent)
                     let items = feed.items;
                     // if (items.length - order )
@@ -147,18 +147,12 @@ app.post('/webhook', (req, res) => {
 function sendWebList(sender, items, order) {
     let elements = []
     for (let i=0; i < items.length; i++) {
-        console.log(items[i].link)
         elements.push({
             title: items[i].pubDate+" "+items[i].title,
             buttons: [
-                // {
-                //     title: "Details "+ items[i].title,
-                //     type: "postback",
-                //     payload: "EVENT_DETAILS_"+ items[i].title
-                // },
                 {
                     "type": "web_url",
-                    "url": items[i].guid,
+                    "url": items[i].link,
                     "title": "Details"
                 }
             ]
