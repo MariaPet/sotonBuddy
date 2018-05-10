@@ -119,7 +119,8 @@ app.post('/webhook', (req, res) => {
                                             var long = store.any($rdf.sym(buildingTriple.subject.value), GEO('long'), undefined)
                                             console.log(JSON.stringify(lat))
                                             console.log(JSON.stringify(long))
-                                            sendMessage(sender,lat.value + " " + long.value);
+                                            sendMessage(sender, lat.value + " " + long.value);
+                                            sendMapLink(sender, lat.value, long.value)
                                         }
                                     });
                                 }
@@ -191,6 +192,27 @@ app.post('/webhook', (req, res) => {
     }
 })
 
+function sendMapLink(sender, lat, long) {
+    messageData = {
+        "attachment": {
+          "type": "template",
+          "payload": {
+            "template_type": "generic",
+            "elements": [{
+              "title": 'Location Shared By Bot',
+              "subtitle": "Location Subtitle",
+              "image_url": "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDDs0MlMr1jwchsHIjMqdl0hvFy5Prio_k" + 
+              "&markers=color:red|label:B|" + lat + "," + long + "&size=360x360&zoom=13"
+            }]
+          }
+        }
+    }
+    var json = {
+        recipient: {id:sender},
+        message: messageData,
+    }
+    postRequest(json);
+}
 function sendWebList(sender, items, order) {
     let elements = []
     for (let i=0; i < items.length; i++) {
@@ -205,7 +227,6 @@ function sendWebList(sender, items, order) {
             ]
         })
     }
-  
     messageData = {
         attachment : {
             type: "template",
