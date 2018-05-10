@@ -108,7 +108,7 @@ app.post('/webhook', (req, res) => {
                                     var BGCODE= $rdf.Namespace("http://id.southampton.ac.uk/ns/building-code-scheme");
                                     const buildingTriples = store.statementsMatching( 
                                         undefined,
-                                        SKOS('notation'),
+                                        $rdf.literal(requestedBuilding, undefined, BGCODE()),//SKOS('notation'),
                                         undefined//$rdf.literal(requestedBuilding, undefined, BGCODE())
                                     );
                                     console.log(buildingTriples.length)
