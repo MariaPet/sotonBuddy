@@ -64,12 +64,12 @@ app.post('/webhook', (req, res) => {
                     // if (items.length - order )
                     if (items.length - order < 4 && items.length - order > 0) {
                         items = items.slice(order, items.length);
-                        sendList(sender, items, -1);
+                        sendWebList(sender, items, -1);
                         res.status(200).send('EVENT_RECEIVED');
                     }
                     else if (items.length - order > 4) {
                         items = items.slice(order, order + 4);
-                        sendList(sender, items, order);
+                        sendWebList(sender, items, order);
                         res.status(200).send('EVENT_RECEIVED');
                     }
                     else {
