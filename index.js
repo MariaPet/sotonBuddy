@@ -83,19 +83,61 @@ app.post('/webhook', (req, res) => {
                     res.status(200).send('EVENT_RECEIVED');
                 });
             }
-            else if (events.isBuildingsPostback(webhookEvent)) {
-                
+            else if (events.isBuildingsPostback(webhookEvent) || events.whichBuildingPostback(webhookEvent)) {
+                var requestedBuilding = events.whichBuildingPostback(webhookEvent);
+                var buildingsUrl = "http://id.southampton.ac.uk/dataset/places/latest.rdf"
+                if (!requestedBuilding) {
+                    sendMessage(sender,"You can type eg. \"B-59\" to get information for building 59, or \"B-SUSU\" for the student union building.");
+                }
+                else {
+                    var buildingsUrl = "http://id.southampton.ac.uk/dataset/places/latest.rdf"
+                    var store = $rdf.graph()
+                    var timeout = 5000 // 5000 ms timeout
+                    var fetcher = new $rdf.Fetcher(store, timeout)
+                    try {
+                        fetcher.nowOrWhenFetched(menusUrl, function(ok, body, xhr) {
+                            if (!ok) {
+                                console.log("Oops, something happened and couldn't fetch data");
+                            }
+                            else {
+                                try {
+                                    var SKOS = $rdf.Namespace("http://www.w3.org/2004/02/skos/core#");
+                                    var GEO = $rdf.Namespace("http://www.w3.org/2003/01/geo/wgs84_pos#")
+                                    const buildingTriples = store.statementsMatching( 
+                                        undefined,
+                                        SKOS('notation'),
+                                        requestedBuilding
+                                    );
+                                    buildingTriples.forEach(function(buildingTriple) {
+                                        var lat = store.any($rdf.sym(buildingTriple.subject.value), GEO('lat'), undefined)
+                                        var long = store.any($rdf.sym(buildingTriple.subject.value), GEO('long'), undefined)
+                                        console.log(JSON.stringify(lat))
+                                        console.log(JSON.stringify(long))
+                                        // if (label.termType === "Literal") {
+                                        //     sendMessage(sender,label.value);
+                                        // }
+                                    });
+                                }
+                                catch (err) {
+                                    console.log(err)
+                                }
+                            }
+                        });
+                    }
+                    catch (err) {
+                        console.log(err)
+                    }
+                }
+                res.status(200).send('EVENT_RECEIVED');
             }
             else if (events.isMenuPostback(webhookEvent)) {
                 try {
-                    var cateringUrl = "http://id.southampton.ac.uk/dataset/catering/latest.ttl"
                     var menusUrl = 'http://id.southampton.ac.uk/dataset/catering-daily-menu/latest.ttl'
                     var store = $rdf.graph()
                     var timeout = 5000 // 5000 ms timeout
                     var fetcher = new $rdf.Fetcher(store, timeout)
                     var requestedMenu = events.whichMenuPostback(webhookEvent)
                     if (requestedMenu) {
-                      
                         try {
                             var RDF = $rdf.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
                             var RDFS = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#")

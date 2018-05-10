@@ -18,22 +18,29 @@ module.exports = {
         }
         return 0;
     },
-    isMenuPostback:  function(webhookEvent) {
+    isMenuPostback: function(webhookEvent) {
         if (webhookEvent.postback && webhookEvent.postback.payload.indexOf("SOTON_MENU") === 0) {
             return true;
         }
         return false;
     },
-    whichMenuPostback:  function(webhookEvent) {
+    whichMenuPostback: function(webhookEvent) {
         let payload = webhookEvent.postback.payload.split('_');
         if (payload.length === 3) {
             return ('http://id.southampton.ac.uk/point-of-service/' + payload[2]);
         }
         return false;
     },
-    isBuildingsPostback:  function(webhookEvent) {
+    isBuildingsPostback: function(webhookEvent) {
         if (webhookEvent.postback && webhookEvent.postback.payload === "SOTON_BUILDINGS") {
             return true;
+        }
+        return false;
+    },
+    whichBuildingPostback: function(webhookEvent) {
+        let payload = webhookEvent.postback.payload.split('-');
+        if (payload.length === 2 && payload[0].toLowerCase() === 'b') {
+            return payload[1];
         }
         return false;
     },
