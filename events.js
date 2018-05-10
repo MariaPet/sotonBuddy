@@ -37,7 +37,7 @@ module.exports = {
         }
         return false;
     },
-    whichBuildingPostback: function(webhookEvent) {
+    whichBuildingMessage: function(webhookEvent) {
         if (webhookEvent.message) {
             let building = webhookEvent.message.text.split('-');
             if (building.length === 2 && building[0].toLowerCase() === 'b') {
