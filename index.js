@@ -108,8 +108,9 @@ app.post('/webhook', (req, res) => {
                                     const buildingTriples = store.statementsMatching( 
                                         undefined,
                                         SKOS('notation'),
-                                        35
+                                        $rdf.literal(requestedBuilding)
                                     );
+                                    console.log(buildingTriples.length)
                                     buildingTriples.forEach(function(buildingTriple) {
                                         var lat = store.any($rdf.sym(buildingTriple.subject.value), GEO('lat'), undefined)
                                         var long = store.any($rdf.sym(buildingTriple.subject.value), GEO('long'), undefined)
