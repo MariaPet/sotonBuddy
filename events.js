@@ -40,8 +40,8 @@ module.exports = {
     whichBuildingMessage: function(webhookEvent) {
         if (webhookEvent.message) {
             let building = webhookEvent.message.text.split('-');
-            if (building.length === 2 && strip(building[0].toLowerCase()) === 'b') {
-                return strip(building[1]);
+            if (building.length === 2 && building[0].toLowerCase().trim() === 'b') {
+                return building[1].trim();
             }
             return false;
         }
@@ -56,8 +56,8 @@ module.exports = {
     whichStopMessage: function(webhookEvent) {
         if (webhookEvent.message) {
             let stop = webhookEvent.message.text.split('-');
-            if (stop.length === 2 && strip(stop[0].toLowerCase()) === 'stop') {
-                return strip(stop[1]);
+            if (stop.length === 2 && stop[0].toLowerCase().trim() === 'stop') {
+                return stop[1].trim();
             }
             return false;
         }
