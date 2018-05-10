@@ -109,18 +109,18 @@ app.post('/webhook', (req, res) => {
                                     const buildingTriples = store.statementsMatching( 
                                         undefined,
                                         SKOS('notation'),
-                                        $rdf.literal(requestedBuilding, undefined, BGCODE())
+                                        undefined
                                     );
                                     console.log(buildingTriples.length)
                                     buildingTriples.forEach(function(buildingTriple) {
-                                        console.log(JSON.stringify(buildingTriple))
-                                        var lat = store.any($rdf.sym(buildingTriple.subject.value), GEO('lat'), undefined)
-                                        var long = store.any($rdf.sym(buildingTriple.subject.value), GEO('long'), undefined)
-                                        console.log(JSON.stringify(lat))
-                                        console.log(JSON.stringify(long))
-                                        // if (label.termType === "Literal") {
-                                        //     sendMessage(sender,label.value);
-                                        // }
+                                        if (buildingTriple.object.value === requestedBuilding) {
+                                            console.log(JSON.stringify(buildingTriple))
+                                            var lat = store.any($rdf.sym(buildingTriple.subject.value), GEO('lat'), undefined)
+                                            var long = store.any($rdf.sym(buildingTriple.subject.value), GEO('long'), undefined)
+                                            console.log(JSON.stringify(lat))
+                                            console.log(JSON.stringify(long))
+                                            sendMessage(sender,lat.value + " " + long.value);
+                                        }
                                     });
                                 }
                                 catch (err) {
