@@ -119,8 +119,8 @@ app.post('/webhook', (req, res) => {
                                             var long = store.any($rdf.sym(buildingTriple.subject.value), GEO('long'), undefined)
                                             console.log(JSON.stringify(lat))
                                             console.log(JSON.stringify(long))
-                                            sendMessage(sender, lat.value + " " + long.value);
-                                            sendMapLink(sender, lat.value, long.value)
+                                            // sendMessage(sender, lat.value + " " + long.value);
+                                            sendMapLink(sender, lat.value, long.value, requestedBuilding)
                                         }
                                     });
                                 }
@@ -192,17 +192,17 @@ app.post('/webhook', (req, res) => {
     }
 })
 
-function sendMapLink(sender, lat, long) {
+function sendMapLink(sender, lat, long, requestedBuilding) {
     messageData = {
         "attachment": {
           "type": "template",
           "payload": {
             "template_type": "generic",
             "elements": [{
-              "title": 'Location Shared By Bot',
-              "subtitle": "Location Subtitle",
+              "title": 'Location of requested building',
+              "subtitle": "Building " + requestedBuilding,
               "image_url": "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyAn0wRsT6Ow5GYxfyLRMISATCzGG4Zdgqo" + 
-              "&markers=color:red|label:B|" + lat + "," + long + "&size=360x360&zoom=18"
+              "&markers=color:red|label:B|" + lat + "," + long + "&size=360x360&zoom=17"
             }]
           }
         }
