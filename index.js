@@ -108,11 +108,12 @@ app.post('/webhook', (req, res) => {
                                     var BGCODE= $rdf.Namespace("http://id.southampton.ac.uk/ns/building-code-scheme");
                                     const buildingTriples = store.statementsMatching( 
                                         undefined,
-                                        $rdf.literal(requestedBuilding, undefined, BGCODE()),//SKOS('notation'),
+                                        SKOS('notation'),
                                         undefined//$rdf.literal(requestedBuilding, undefined, BGCODE())
                                     );
                                     console.log(buildingTriples.length)
                                     buildingTriples.forEach(function(buildingTriple) {
+                                        console.log(JSON.stringify(buildingTriple))
                                         var lat = store.any($rdf.sym(buildingTriple.subject.value), GEO('lat'), undefined)
                                         var long = store.any($rdf.sym(buildingTriple.subject.value), GEO('long'), undefined)
                                         console.log(JSON.stringify(lat))
