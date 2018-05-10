@@ -102,6 +102,7 @@ app.post('/webhook', (req, res) => {
                             }
                             else {
                                 try {
+                                    console.log(requestedBuilding)
                                     var SKOS = $rdf.Namespace("http://www.w3.org/2004/02/skos/core#");
                                     var GEO = $rdf.Namespace("http://www.w3.org/2003/01/geo/wgs84_pos#")
                                     const buildingTriples = store.statementsMatching( 
