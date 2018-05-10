@@ -203,6 +203,7 @@ app.post('/webhook', (req, res) => {
             }
             else {
                 sendMessage(sender, "Sorry, I didn't understand this. Maybe try again with an option from the menu?")
+                res.status(200).send('EVENT_RECEIVED');
             }
         });
     }
