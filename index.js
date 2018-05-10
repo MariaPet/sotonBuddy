@@ -109,7 +109,7 @@ app.post('/webhook', (req, res) => {
                                     const buildingTriples = store.statementsMatching( 
                                         undefined,
                                         SKOS('notation'),
-                                        undefined//$rdf.literal(requestedBuilding, undefined, BGCODE())
+                                        $rdf.literal(requestedBuilding, undefined, BGCODE())
                                     );
                                     console.log(buildingTriples.length)
                                     buildingTriples.forEach(function(buildingTriple) {
