@@ -38,9 +38,12 @@ module.exports = {
         return false;
     },
     whichBuildingPostback: function(webhookEvent) {
-        let payload = webhookEvent.postback.payload.split('-');
-        if (payload.length === 2 && payload[0].toLowerCase() === 'b') {
-            return payload[1];
+        if (webhookEvent.message) {
+            let building = webhookEvent.message.text.split('-');
+            if (building.length === 2 && building[0].toLowerCase() === 'b') {
+                return building[1];
+            }
+            return false;
         }
         return false;
     },

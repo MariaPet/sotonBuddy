@@ -83,8 +83,8 @@ app.post('/webhook', (req, res) => {
                     res.status(200).send('EVENT_RECEIVED');
                 });
             }
-            else if (events.isBuildingsPostback(webhookEvent) || events.whichBuildingPostback(webhookEvent)) {
-                var requestedBuilding = events.whichBuildingPostback(webhookEvent);
+            else if (events.isBuildingsPostback(webhookEvent) || events.whichBuildingMessage(webhookEvent)) {
+                var requestedBuilding = events.whichBuildingMessage(webhookEvent);
                 var buildingsUrl = "http://id.southampton.ac.uk/dataset/places/latest.rdf"
                 if (!requestedBuilding) {
                     sendMessage(sender,"You can type eg. \"B-59\" to get information for building 59, or \"B-SUSU\" for the student union building.");
