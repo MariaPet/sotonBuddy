@@ -182,6 +182,9 @@ app.post('/webhook', (req, res) => {
                 }
             }
             else if (events.isBusPostback(webhookEvent)) {
+                // send quick reply for location
+                sendMessage(sender, "Please send your location to find bustops near you", true)
+                res.status(200).send('EVENT_RECEIVED');
             }
         });
     }
@@ -250,8 +253,14 @@ function sendWebList(sender, items, order) {
     }
     postRequest(json);
 }
-function sendMessage(sender, text) {
+function sendMessage(sender, text, quickReply) {
     var messageData = {text: text}
+    if (quickReply) {
+        messageData.quick_replies = []
+        messageData.quick_replies.push({
+            content_type: "location"
+        });
+    }
     var json = {
         recipient: {id:sender},
         message: messageData,
