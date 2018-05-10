@@ -96,7 +96,7 @@ app.post('/webhook', (req, res) => {
                     var timeout = 5000 // 5000 ms timeout
                     var fetcher = new $rdf.Fetcher(store, timeout)
                     try {
-                        fetcher.nowOrWhenFetched(menusUrl, function(ok, body, xhr) {
+                        fetcher.nowOrWhenFetched(buildingsUrl, function(ok, body, xhr) {
                             if (!ok) {
                                 console.log("Oops, something happened and couldn't fetch data");
                             }
