@@ -104,11 +104,12 @@ app.post('/webhook', (req, res) => {
                                 try {
                                     console.log(requestedBuilding)
                                     var SKOS = $rdf.Namespace("http://www.w3.org/2004/02/skos/core#");
-                                    var GEO = $rdf.Namespace("http://www.w3.org/2003/01/geo/wgs84_pos#")
+                                    var GEO = $rdf.Namespace("http://www.w3.org/2003/01/geo/wgs84_pos#");
+                                    var BGCODE= $rdf.Namespace("http://id.southampton.ac.uk/ns/building-code-scheme");
                                     const buildingTriples = store.statementsMatching( 
                                         undefined,
                                         SKOS('notation'),
-                                        $rdf.literal(requestedBuilding)
+                                        $rdf.literal(requestedBuilding, undefined, BGCODE())
                                     );
                                     console.log(buildingTriples.length)
                                     buildingTriples.forEach(function(buildingTriple) {
