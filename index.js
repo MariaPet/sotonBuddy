@@ -147,7 +147,7 @@ app.post('/webhook', (req, res) => {
 function sendWebList(sender, items, order) {
     let elements = []
     for (let i=0; i < items.length; i++) {
-        console.log(item[i].link)
+        console.log(items[i].link)
         elements.push({
             title: items[i].pubDate+" "+items[i].title,
             buttons: [
@@ -158,7 +158,7 @@ function sendWebList(sender, items, order) {
                 // },
                 {
                     "type": "web_url",
-                    "url": item[i].guid,
+                    "url": items[i].guid,
                     "title": "Details"
                 }
             ]
