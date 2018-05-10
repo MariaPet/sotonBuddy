@@ -126,12 +126,14 @@ app.post('/webhook', (req, res) => {
                                 }
                                 catch (err) {
                                     console.log(err)
+                                    res.status(200).send('EVENT_RECEIVED');
                                 }
                             }
                         });
                     }
                     catch (err) {
                         console.log(err)
+                        res.status(200).send('EVENT_RECEIVED');
                     }
                 }
                 res.status(200).send('EVENT_RECEIVED');

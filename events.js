@@ -38,7 +38,7 @@ module.exports = {
         return false;
     },
     whichBuildingMessage: function(webhookEvent) {
-        if (webhookEvent.message) {
+        if (webhookEvent.message && webhookEvent.message.text) {
             console.log(JSON.stringify(webhookEvent.message))
             let building = webhookEvent.message.text.split('-');
             if (building.length === 2 && building[0].toLowerCase().trim() === 'b') {
