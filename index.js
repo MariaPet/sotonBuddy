@@ -41,7 +41,6 @@ app.post('/webhook', (req, res) => {
     let body = req.body;
     console.log('Message received')
     let eventOrigin = body.object;
-    
     if (eventOrigin === "page") {
         
         // Iterates over each entry - there may be multiple if batched
@@ -96,55 +95,38 @@ app.post('/webhook', (req, res) => {
                     var fetcher = new $rdf.Fetcher(store, timeout)
                     var requestedMenu = events.whichMenuPostback(webhookEvent)
                     if (requestedMenu) {
-                        // fetcher.nowOrWhenFetched(cateringUrl, function(ok, body, xhr) {
-                            // if (!ok) {
-                                // console.log("Oops, something happened and couldn't fetch data");
-                            // } else {
-                                try {
-                                    var RDF = $rdf.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-                                    var RDFS = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#")
-                                    var NS0 = $rdf.Namespace("http://purl.org/goodrelations/v1#");
-                                    // const poiTriples = store.statementsMatching( 
-                                    //     undefined,
-                                    //     RDF('type'),
-                                    //     $rdf.sym("http://purl.org/goodrelations/v1#LocationOfSalesOrServiceProvisioning")
-                                    // );
-                                    // poiTriples.forEach(function(poiTriple) {
-                                    //     var pointOfSaleUri = poiTriple.subject.value
-                                        // if (requestedMenu) {
-                                            fetcher.nowOrWhenFetched(menusUrl, function(ok, body, xhr) {
-                                                if (!ok) {
-                                                    console.log("Oops, something happened and couldn't fetch data");
-                                                } else {
-                                                    try {
-                                                        const menuTriples = store.statementsMatching( 
-                                                            undefined,
-                                                            NS0('availableAtOrFrom'),
-                                                            $rdf.sym(requestedMenu)
-                                                        );
-                                                        menuTriples.forEach(function(menuTriple) {
-                                                            var label = store.any($rdf.sym(menuTriple.subject.value), RDFS('label'), undefined)
-                                                            console.log(JSON.stringify(label))
-                                                            if (label.termType === "Literal") {
-                                                                sendMessage(sender,label.value);
-                                                            }
-                                                        });
-                                                    } catch (err) {
-                                                        console.log(err)
-                                                    }
-                                                }
-                                            })
-                                        // }
-                                    // });
+                      
+                        try {
+                            var RDF = $rdf.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+                            var RDFS = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#")
+                            var NS0 = $rdf.Namespace("http://purl.org/goodrelations/v1#");
+                            fetcher.nowOrWhenFetched(menusUrl, function(ok, body, xhr) {
+                                if (!ok) {
+                                    console.log("Oops, something happened and couldn't fetch data");
+                                } else {
+                                    try {
+                                        const menuTriples = store.statementsMatching( 
+                                            undefined,
+                                            NS0('availableAtOrFrom'),
+                                            $rdf.sym(requestedMenu)
+                                        );
+                                        menuTriples.forEach(function(menuTriple) {
+                                            var label = store.any($rdf.sym(menuTriple.subject.value), RDFS('label'), undefined)
+                                            console.log(JSON.stringify(label))
+                                            if (label.termType === "Literal") {
+                                                sendMessage(sender,label.value);
+                                            }
+                                        });
+                                    } catch (err) {
+                                        console.log(err)
+                                    }
                                 }
-                                catch (err) {
-                                    console.log(err)
-                                }
-                            // }
-                        // });
+                            })
+                        }
+                        catch (err) {
+                            console.log(err)
+                        }
                     }
-                    
-                    
                     res.status(200).send('EVENT_RECEIVED');
                 } catch (err) {
                     console.log(err)
@@ -162,16 +144,22 @@ app.post('/webhook', (req, res) => {
     }
 })
 
-function sendList(sender, items, order) {
+function sendWebList(sender, items, order) {
     let elements = []
     for (let i=0; i < items.length; i++) {
+        console.log(item[i].link)
         elements.push({
             title: items[i].pubDate+" "+items[i].title,
             buttons: [
+                // {
+                //     title: "Details "+ items[i].title,
+                //     type: "postback",
+                //     payload: "EVENT_DETAILS_"+ items[i].title
+                // },
                 {
-                    title: "Details "+ items[i].title,
-                    type: "postback",
-                    payload: "EVENT_DETAILS_"+ items[i].title
+                    "type": "web_url",
+                    "url": item[i].guid,
+                    "title": "Details"
                 }
             ]
         })
@@ -227,6 +215,3 @@ function postRequest(json) {
         }
     });
 }
-
-
-
