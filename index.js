@@ -201,8 +201,8 @@ function sendMapLink(sender, lat, long) {
             "elements": [{
               "title": 'Location Shared By Bot',
               "subtitle": "Location Subtitle",
-              "image_url": "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDDs0MlMr1jwchsHIjMqdl0hvFy5Prio_k" + 
-              "&markers=color:red|label:B|" + lat + "," + long + "&size=360x360&zoom=13"
+              "image_url": "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyAn0wRsT6Ow5GYxfyLRMISATCzGG4Zdgqo" + 
+              "&markers=color:red|label:B|" + lat + "," + long + "&size=360x360&zoom=18"
             }]
           }
         }
