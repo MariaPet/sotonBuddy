@@ -181,10 +181,28 @@ app.post('/webhook', (req, res) => {
                     res.status(200).send('EVENT_RECEIVED');
                 }
             }
-            else if (events.isBusPostback(webhookEvent)) {
-                // send quick reply for location
-                sendMessage(sender, "Please send your location to find bustops near you", true)
+            else if (events.isBusPostback(webhookEvent) || events.whichStopMessage(webhookEvent) || events.withAttachedLocation(webhookEvent)) {
+                var stop = events.whichStopMessage(webhookEvent);
+                var location = events.withAttachedLocation(webhookEvent);
+                if (location) {
+                    request('https://transportapi.com/v3/uk/bus/stops/near.json?app_id=a6e4faa8&app_key=413d7ff0e20550f47d4c976f01c0fa39&lat=' +
+                     location.lat + '&lon=' + 
+                     location.long , function (error, response, body) {
+                        var body = JSON.parse(body);
+                        sendActionList(sender, body.stops.splice(0,4))
+                     });
+                }
+                else if (stop) {
+
+                }
+                else {
+                    // send quick reply for location
+                    sendMessage(sender, "Please send your location to find bustops near you or send eg. stop-Giddy Bridge", true)
+                }
                 res.status(200).send('EVENT_RECEIVED');
+            }
+            else {
+                sendMessage(sender, "Sorry, I didn't understand this. Maybe try again with an option from the menu?")
             }
         });
     }
@@ -244,6 +262,37 @@ function sendWebList(sender, items, order) {
                       "payload": "SOTON_EVENTS_" + (order + 4)           
                     }
                   ]
+            }
+        }
+    }
+    json= {
+        recipient: {id:sender},
+        message: messageData,
+    }
+    postRequest(json);
+}
+
+function sendActionList(sender, items) {
+    let elements = []
+    for (let i=0; i < items.length; i++) {
+        elements.push({
+            title: items[i].pubDate+" "+items[i].title,
+            buttons: [
+                {
+                    title: "Stop "+ items[i].name,
+                    type: "postback",
+                    payload: "Stop "+ items[i].stop_name
+                }
+            ]
+        })
+    }
+    messageData = {
+        attachment : {
+            type: "template",
+            payload: {
+                template_type: "list",
+                top_element_style: "compact",
+                elements: elements
             }
         }
     }

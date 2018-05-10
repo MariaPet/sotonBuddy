@@ -40,8 +40,8 @@ module.exports = {
     whichBuildingMessage: function(webhookEvent) {
         if (webhookEvent.message) {
             let building = webhookEvent.message.text.split('-');
-            if (building.length === 2 && building[0].toLowerCase() === 'b') {
-                return building[1];
+            if (building.length === 2 && strip(building[0].toLowerCase()) === 'b') {
+                return strip(building[1]);
             }
             return false;
         }
@@ -52,6 +52,32 @@ module.exports = {
             return true;
         }
         return false;
+    },
+    whichStopMessage: function(webhookEvent) {
+        if (webhookEvent.message) {
+            let stop = webhookEvent.message.text.split('-');
+            if (stop.length === 2 && strip(stop[0].toLowerCase()) === 'stop') {
+                return strip(stop[1]);
+            }
+            return false;
+        }
+        return false;
+    },
+    withAttachedLocation: function(webhookEvent) {
+        if (webhookEvent.message && webhookEvent.message.attachments) {
+            if (webhookEvent.message.attachments[0].type === "location") {
+                return {
+                    lat: webhookEvent.message.attachments[0].payload.coordinates.lat,
+                    long: webhookEvent.message.attachments[0].payload.coordinates.long
+                }
+            }
+            else {
+                return false
+            }
+        }
+        else {
+            return false;
+        }
     },
     isMessage: function(webhookEvent) {
 
