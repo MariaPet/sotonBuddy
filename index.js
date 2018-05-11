@@ -114,6 +114,9 @@ app.post('/webhook', (req, res) => {
                                         undefined
                                     );
                                     console.log(buildingTriples.length)
+                                    if (buildingTriples.length === 0) {
+                                        sendMessage(sender, "I'm sorry, I couldn't find the building you requested");
+                                    }
                                     buildingTriples.forEach(function(buildingTriple) {
                                         if (buildingTriple.object.value === requestedBuilding) {
                                             console.log(JSON.stringify(buildingTriple))
@@ -124,7 +127,6 @@ app.post('/webhook', (req, res) => {
                                             console.log(JSON.stringify(lat))
                                             console.log(JSON.stringify(long))
                                             console.log(JSON.stringify(campus))
-                                            // sendMessage(sender, campus.value);
                                             sendMapLink(sender, lat.value, long.value, requestedBuilding, campus.value)
                                         }
                                     });
