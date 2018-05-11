@@ -260,7 +260,8 @@ function sendWebList(sender, items, order) {
     let elements = []
     for (let i=0; i < items.length; i++) {
         elements.push({
-            title: items[i].pubDate+" "+items[i].title,
+            title: items[i].title,
+            subtitle: items[i].pubDate,
             buttons: [
                 {
                     "type": "web_url",
