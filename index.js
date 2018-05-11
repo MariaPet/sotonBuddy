@@ -103,6 +103,7 @@ app.post('/webhook', (req, res) => {
                             else {
                                 try {
                                     console.log(requestedBuilding)
+                                    var RDFS = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#")
                                     var SKOS = $rdf.Namespace("http://www.w3.org/2004/02/skos/core#");
                                     var GEO = $rdf.Namespace("http://www.w3.org/2003/01/geo/wgs84_pos#");
                                     var BGCODE= $rdf.Namespace("http://id.southampton.ac.uk/ns/building-code-scheme");
@@ -118,11 +119,12 @@ app.post('/webhook', (req, res) => {
                                             console.log(JSON.stringify(buildingTriple))
                                             var lat = store.any($rdf.sym(buildingTriple.subject.value), GEO('lat'), undefined)
                                             var long = store.any($rdf.sym(buildingTriple.subject.value), GEO('long'), undefined)
-                                            var campus = store.any($rdf.sym(buildingTriple.subject.value), SPACIAL('within'), undefined)
+                                            var campusUri = store.any($rdf.sym(buildingTriple.subject.value), SPACIAL('within'), undefined)
+                                            var campus = store.any($rdf.sym(campusUri.value), RDFS('label'), undefined)
                                             console.log(JSON.stringify(lat))
                                             console.log(JSON.stringify(long))
                                             console.log(JSON.stringify(campus))
-                                            sendMessage(sender, campus.object.value);
+                                            sendMessage(sender, campus.value);
                                             sendMapLink(sender, lat.value, long.value, requestedBuilding)
                                         }
                                     });
