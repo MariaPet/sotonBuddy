@@ -121,6 +121,7 @@ app.post('/webhook', (req, res) => {
                                             var campus = store.any($rdf.sym(buildingTriple.subject.value), SPACIAL('within'), undefined)
                                             console.log(JSON.stringify(lat))
                                             console.log(JSON.stringify(long))
+                                            console.log(JSON.stringify(campus))
                                             sendMessage(sender, campus.object.value);
                                             sendMapLink(sender, lat.value, long.value, requestedBuilding)
                                         }
