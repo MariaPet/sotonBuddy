@@ -195,7 +195,18 @@ app.post('/webhook', (req, res) => {
                      });
                 }
                 else if (stop) {
-
+                    request('https://transportapi.com/v3/uk/bus/stop/'+ stop +'/live.json?app_id=4c4606af&app_key=413d7ff0e20550f47d4c976f01c0fa39&group=route&nextbuses=yes',
+                    function (error, response, body) {
+                        var body = JSON.parse(body);
+                        for (var key in body.departures) {
+                            var departureTime = body.departures[key][0].aimed_departure_time;
+                            var operatorName = body.departures[key][0].operator_name;
+                            var direction = body.departures[key][0].direction;
+                            var line = body.departures[key][0].line_name;
+                            nextBus = "🚌 " + operatorName + " " + line + " 🚌\nBus stop: "  + body.name + "\nDirection: " + direction + "\nDeparture time: "+ departureTime
+                            sendMessage(sender, nextBus);
+                        }
+                    });
                 }
                 else {
                     // send quick reply for location
@@ -287,7 +298,7 @@ function sendActionList(sender, items) {
                 {
                     title: "Bus Info",
                     type: "postback",
-                    payload: "stop-" + items[i].stop_name
+                    payload: "stop-" + items[i].atcocode
                 }
             ]
         })

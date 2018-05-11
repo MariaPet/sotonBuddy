@@ -55,7 +55,6 @@ module.exports = {
         return false;
     },
     whichStopMessage: function(webhookEvent) {
-        console.log(JSON.stringify(webhookEvent))
         if ((webhookEvent.message && webhookEvent.message.text) || (webhookEvent.postback && webhookEvent.postback.payload)) {
             let stop = webhookEvent.postback ? webhookEvent.postback.payload.split('-') : webhookEvent.message.text.split('-');
             if (stop.length === 2 && stop[0].toLowerCase().trim() === 'stop') {
