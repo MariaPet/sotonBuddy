@@ -279,7 +279,10 @@ function sendActionList(sender, items) {
     let elements = []
     for (let i=0; i < items.length; i++) {
         elements.push({
-            title: items[i].name+" "+items[i].distance + " meters away",
+            title: "Stop " + items[i].name,
+            subtitle: items[i].distance + " meters away",
+            image_url: "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyAn0wRsT6Ow5GYxfyLRMISATCzGG4Zdgqo" + 
+              "&markers=color:red|label:B|" + items[i].latitude + "," + items[i].longitude + "&size=360x360&zoom=17",
             buttons: [
                 {
                     title: "Bus Info",
