@@ -279,10 +279,10 @@ function sendActionList(sender, items) {
     let elements = []
     for (let i=0; i < items.length; i++) {
         elements.push({
-            title: items[i].pubDate+" "+items[i].title,
+            title: items[i].name+" "+items[i].distance + " meters away",
             buttons: [
                 {
-                    title: "Stop "+ items[i].name,
+                    title: "Bus Info",
                     type: "postback",
                     payload: "Stop "+ items[i].stop_name
                 }
