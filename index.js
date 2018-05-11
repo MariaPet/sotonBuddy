@@ -106,6 +106,7 @@ app.post('/webhook', (req, res) => {
                                     var SKOS = $rdf.Namespace("http://www.w3.org/2004/02/skos/core#");
                                     var GEO = $rdf.Namespace("http://www.w3.org/2003/01/geo/wgs84_pos#");
                                     var BGCODE= $rdf.Namespace("http://id.southampton.ac.uk/ns/building-code-scheme");
+                                    var SPACIAL = $rdf.Namespace("http://data.ordnancesurvey.co.uk/ontology/spatialrelations/")
                                     const buildingTriples = store.statementsMatching( 
                                         undefined,
                                         SKOS('notation'),
@@ -117,9 +118,10 @@ app.post('/webhook', (req, res) => {
                                             console.log(JSON.stringify(buildingTriple))
                                             var lat = store.any($rdf.sym(buildingTriple.subject.value), GEO('lat'), undefined)
                                             var long = store.any($rdf.sym(buildingTriple.subject.value), GEO('long'), undefined)
+                                            var campus = store.any($rdf.sym(buildingTriple.subject.value), SPACIAL('within'), undefined)
                                             console.log(JSON.stringify(lat))
                                             console.log(JSON.stringify(long))
-                                            // sendMessage(sender, lat.value + " " + long.value);
+                                            sendMessage(sender, campus.object.value);
                                             sendMapLink(sender, lat.value, long.value, requestedBuilding)
                                         }
                                     });
@@ -198,6 +200,9 @@ app.post('/webhook', (req, res) => {
                     request('https://transportapi.com/v3/uk/bus/stop/'+ stop +'/live.json?app_id=4c4606af&app_key=413d7ff0e20550f47d4c976f01c0fa39&group=route&nextbuses=yes',
                     function (error, response, body) {
                         var body = JSON.parse(body);
+                        if (!body.departures) {
+                            sendMessage(sender, "Sorry, I couldn't find any departures from " + body.name);
+                        }
                         for (var key in body.departures) {
                             var departureTime = body.departures[key][0].aimed_departure_time;
                             var operatorName = body.departures[key][0].operator_name;
