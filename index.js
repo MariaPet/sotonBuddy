@@ -287,7 +287,7 @@ function sendActionList(sender, items) {
                 {
                     title: "Bus Info",
                     type: "postback",
-                    payload: "stop-"+ items[i].stop_name
+                    payload: "stop-" + items[i].stop_name
                 }
             ]
         })
