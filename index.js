@@ -124,8 +124,8 @@ app.post('/webhook', (req, res) => {
                                             console.log(JSON.stringify(lat))
                                             console.log(JSON.stringify(long))
                                             console.log(JSON.stringify(campus))
-                                            sendMessage(sender, campus.value);
-                                            sendMapLink(sender, lat.value, long.value, requestedBuilding)
+                                            // sendMessage(sender, campus.value);
+                                            sendMapLink(sender, lat.value, long.value, requestedBuilding, campus.value)
                                         }
                                     });
                                 }
@@ -235,15 +235,15 @@ app.post('/webhook', (req, res) => {
     }
 })
 
-function sendMapLink(sender, lat, long, requestedBuilding) {
+function sendMapLink(sender, lat, long, requestedBuilding, campus) {
     messageData = {
         "attachment": {
           "type": "template",
           "payload": {
             "template_type": "generic",
             "elements": [{
-              "title": 'Location of requested building',
-              "subtitle": "Building " + requestedBuilding,
+              "title": "Building " + requestedBuilding,
+              "subtitle": campus,
               "image_url": "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyAn0wRsT6Ow5GYxfyLRMISATCzGG4Zdgqo" + 
               "&markers=color:red|label:B|" + lat + "," + long + "&size=360x360&zoom=17"
             }]
