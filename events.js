@@ -80,7 +80,18 @@ module.exports = {
             return false;
         }
     },
-    isMessage: function(webhookEvent) {
-
+    isEasterEgg: function(webhookEvent) {
+        if (webhookEvent.message && webhookEvent.message.text) {
+            var text = webhookEvent.message.text
+            if (text.toLowerCase() === "ρεζαζαντεχ") {
+                return true
+            }
+            else {
+                return false
+            }
+        }
+        else {
+            return false
+        }
     }
 }

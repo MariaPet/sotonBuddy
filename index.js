@@ -224,6 +224,10 @@ app.post('/webhook', (req, res) => {
                 }
                 res.status(200).send('EVENT_RECEIVED');
             }
+            else if(events.isEasterEgg) {
+                sendReza(sender);
+                res.status(200).send('EVENT_RECEIVED');
+            }
             else {
                 sendMessage(sender, "Sorry, I didn't understand this. Maybe try again with an option from the menu?")
                 res.status(200).send('EVENT_RECEIVED');
@@ -237,6 +241,24 @@ app.post('/webhook', (req, res) => {
     }
 })
 
+function sendReza(sender) {
+    var messageData = {"attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": [{
+            "title": "Soton Buddy's best buddy is Reza",
+            "image_url": "https://secure.ecs.soton.ac.uk/heights/heights-image.php?id=person_10385&mode=profile"
+          }]
+        }
+      }
+    }
+    var json = {
+        recipient: {id:sender},
+        message: messageData,
+    }
+    postRequest(json);
+}
 function sendMapLink(sender, lat, long, requestedBuilding, campus) {
     messageData = {
         "attachment": {
