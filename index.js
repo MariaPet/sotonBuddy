@@ -167,8 +167,7 @@ app.post('/webhook', (req, res) => {
                                             NS0('availableAtOrFrom'),
                                             $rdf.sym(requestedMenu)
                                         );
-                                        menuTriples.slice(0, 10)
-                                        menuTriples.forEach(function(menuTriple) {
+                                        menuTriples.slice(0, 10).forEach(function(menuTriple) {
                                             var label = store.any($rdf.sym(menuTriple.subject.value), RDFS('label'), undefined)
                                             console.log(JSON.stringify(label))
                                             if (label.termType === "Literal") {
