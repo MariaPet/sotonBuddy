@@ -171,7 +171,7 @@ app.post('/webhook', (req, res) => {
                                         menuTriples.forEach(function(menuTriple) {
                                             var label = store.any($rdf.sym(menuTriple.subject.value), RDFS('label'), undefined)
                                             console.log(JSON.stringify(label))
-                                            if (label.termType === "Literal" && messageCounter < 10) {
+                                            if (label.termType === "Literal" && label.value && messageCounter < 10) {
                                                 messageCounter++;
                                                 sendMessage(sender,label.value);
                                             }
