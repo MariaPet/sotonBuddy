@@ -167,6 +167,7 @@ app.post('/webhook', (req, res) => {
                                             NS0('availableAtOrFrom'),
                                             $rdf.sym(requestedMenu)
                                         );
+                                        menuTriples.slice(0, 10)
                                         menuTriples.forEach(function(menuTriple) {
                                             var label = store.any($rdf.sym(menuTriple.subject.value), RDFS('label'), undefined)
                                             console.log(JSON.stringify(label))
@@ -224,10 +225,10 @@ app.post('/webhook', (req, res) => {
                 }
                 res.status(200).send('EVENT_RECEIVED');
             }
-            else if(events.isEasterEgg) {
-                sendReza(sender);
-                res.status(200).send('EVENT_RECEIVED');
-            }
+            // else if(events.isEasterEgg) {
+            //     sendReza(sender);
+            //     res.status(200).send('EVENT_RECEIVED');
+            // }
             else {
                 sendMessage(sender, "Sorry, I didn't understand this. Maybe try again with an option from the menu?")
                 res.status(200).send('EVENT_RECEIVED');
